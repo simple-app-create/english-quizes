@@ -12,7 +12,7 @@ from pathlib import Path
 from quiz_manager import QuizManager, Quiz
 from translations import get_text, get_available_languages, get_language_display_name
 from explanation_translator import get_translated_explanation
-
+from themes import ThemeManager, render_theme_selector
 
 # Configure Streamlit page
 st.set_page_config(
@@ -65,6 +65,9 @@ def initialize_session_state():
         st.session_state.selected_difficulty = None
     if 'language' not in st.session_state:
         st.session_state.language = 'zh_TW'  # Default to Traditional Chinese
+    
+    # Initialize theme using ThemeManager
+    ThemeManager.initialize_theme_state()
 
 
 def show_welcome_screen():
@@ -255,16 +258,16 @@ def show_quiz_screen():
     st.markdown("---")
     
     # Question display
-    st.markdown(f"### Question {current_index + 1}")
-    st.markdown(f"**Topic:** {question.topic} | **Difficulty:** {question.difficulty}")
-    
-    # Show passage if it exists
-    if question.passage:
-        st.markdown("#### 📖 Passage:")
-        st.markdown(f"> {question.passage}")
-        st.markdown("---")
-    
-    st.markdown(f"#### ❓ {question.question}")
+    st.markdown(f"""
+    <div class="quiz-question">
+        <h3>Question {current_index + 1}</h3>
+        <p><strong>Topic:</strong> {question.topic} | <strong>Difficulty:</strong> {question.difficulty}</p>
+        
+        {f'<h4>📖 Passage:</h4><blockquote>{question.passage}</blockquote><hr>' if question.passage else ''}
+        
+        <h4>❓ {question.question}</h4>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Answer choices
     answer = st.radio(
@@ -420,6 +423,9 @@ def main():
     """Main Streamlit application"""
     initialize_session_state()
     
+    # Apply theme first
+    ThemeManager.apply_current_theme()
+    
     # Sidebar with theme toggle and navigation
     with st.sidebar:
         lang = st.session_state.language
@@ -445,12 +451,8 @@ def main():
         
         st.markdown("---")
         
-        # Theme toggle (placeholder - Streamlit doesn't have built-in dark mode toggle)
-        st.markdown(get_text('theme', lang))
-        theme_options = [get_text('light', lang), get_text('dark', lang)]
-        theme = st.selectbox(get_text('choose_theme', lang), theme_options, help="Theme selection (visual indication)")
-        if theme == get_text('dark', lang):
-            st.markdown(f"*{get_text('theme_selected', lang)}*")
+        # Theme selector using the new system
+        render_theme_selector(lang)
         
         st.markdown("---")
         
