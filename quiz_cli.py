@@ -37,52 +37,114 @@ class QuizCLI:
         print("-"*50)
     
     def load_quiz_menu(self):
-        """Menu for loading quiz files"""
-        print("\n📁 Load Quiz File")
-        print("-" * 20)
+        """Menu for loading quiz questions by topic"""
+        print("\n📚 Load Questions by Topic")
+        print("-" * 30)
         
-        # List available YAML files
-        yaml_files = list(Path(".").glob("*.yaml")) + list(Path(".").glob("*.yml"))
+        # Get available topics
+        topics = self.manager.get_available_topics()
         
-        if not yaml_files:
-            print("No YAML quiz files found in current directory.")
-            input("Press Enter to continue...")
-            return
+        if not topics:
+            print("No quiz topics found in the quizzes directory.")
+            print("Would you like to create sample quizzes? (y/n)")
+            if input().strip().lower() == 'y':
+                self.manager.create_sample_quiz()
+                topics = self.manager.get_available_topics()
+                if not topics:
+                    input("Press Enter to continue...")
+                    return
+            else:
+                input("Press Enter to continue...")
+                return
         
-        print("Available quiz files:")
-        for i, file in enumerate(yaml_files, 1):
-            print(f"{i}. {file.name}")
+        # Display available topics with question counts
+        print("Available topics:")
+        topic_questions = {}
+        for i, topic in enumerate(topics, 1):
+            try:
+                questions = self.manager.load_questions_by_topic(topic)
+                topic_questions[topic] = questions
+                print(f"{i}. {topic} ({len(questions)} questions)")
+            except Exception as e:
+                print(f"❌ Error loading topic {topic}: {e}")
+        
+        print(f"{len(topics) + 1}. Load all topics")
         
         try:
-            choice = int(input(f"\nEnter choice (1-{len(yaml_files)}): "))
-            if 1 <= choice <= len(yaml_files):
-                selected_file = yaml_files[choice - 1]
-                self.current_quiz = self.manager.load_quiz_from_file(selected_file)
-                print(f"✅ Successfully loaded: {self.current_quiz.quiz_metadata.title}")
+            choices = input("\nEnter topic numbers to load (comma-separated, e.g., 1,3): ").strip()
+            if not choices:
+                print("❌ No topics selected!")
+                input("Press Enter to continue...")
+                return
+                
+            # Handle 'all' or specific selection
+            if choices.lower() == 'all' or int(choices) == len(topics) + 1:
+                selected_topics = topics
             else:
-                print("❌ Invalid choice!")
-        except (ValueError, Exception) as e:
-            print(f"❌ Error loading quiz: {e}")
+                selected_indices = [int(x.strip()) - 1 for x in choices.split(',')]
+                selected_topics = [topics[i] for i in selected_indices if 0 <= i < len(topics)]
+            
+            if not selected_topics:
+                print("❌ No valid topics selected!")
+                input("Press Enter to continue...")
+                return
+                
+            # Load questions from selected topics
+            questions = []
+            for topic in selected_topics:
+                try:
+                    questions.extend(self.manager.load_questions_by_topic(topic))
+                except Exception as e:
+                    print(f"❌ Error loading {topic}: {e}")
+            
+            if not questions:
+                print("❌ No questions could be loaded!")
+                input("Press Enter to continue...")
+                return
+                
+            # Create a quiz with the loaded questions
+            quiz_data = {
+                "quiz_metadata": {
+                    "title": f"Quiz: {', '.join(selected_topics)}",
+                    "version": "1.0",
+                    "created_date": "2025-06-15",
+                    "total_questions": len(questions),
+                    "description": f"Quiz covering {', '.join(selected_topics)}"
+                },
+                "questions": [q.model_dump() for q in questions]
+            }
+            self.current_quiz = Quiz(**quiz_data)
+            print(f"✅ Successfully loaded {len(questions)} questions from {len(selected_topics)} topic(s)")
+            
+        except (ValueError, IndexError) as e:
+            print(f"❌ Invalid input: {e}")
+        except Exception as e:
+            print(f"❌ Error loading questions: {e}")
         
         input("Press Enter to continue...")
     
     def create_sample_quiz(self):
-        """Create a sample quiz file"""
-        print("\n📝 Create Sample Quiz")
-        print("-" * 20)
+        """Create sample quiz topic files"""
+        print("\n📝 Create Sample Quiz Topics")
+        print("-" * 30)
         
-        filename = input("Enter filename for sample quiz (default: sample_quiz.yaml): ").strip()
-        if not filename:
-            filename = "sample_quiz.yaml"
-        
-        if not filename.endswith(('.yaml', '.yml')):
-            filename += '.yaml'
+        # Check if quizzes directory exists and is not empty
+        if self.manager.quizzes_dir.exists() and any(self.manager.quizzes_dir.iterdir()):
+            print("⚠️  The quizzes directory already contains files.")
+            print("This will create new sample files and may overwrite existing ones.")
+            confirm = input("Continue? (y/n): ").strip().lower()
+            if confirm != 'y':
+                print("Operation cancelled.")
+                input("Press Enter to continue...")
+                return
         
         try:
-            create_sample_quiz_file(filename)
-            print(f"✅ Sample quiz created: {filename}")
+            create_sample_quiz_file()
+            print(f"✅ Sample quiz topics created in: {self.manager.quizzes_dir}")
+            # Reload available topics
+            self.manager._discover_topics()
         except Exception as e:
-            print(f"❌ Error creating sample quiz: {e}")
+            print(f"❌ Error creating sample quizzes: {e}")
         
         input("Press Enter to continue...")
     
@@ -207,27 +269,54 @@ class QuizCLI:
     
     def practice_by_topic(self):
         """Practice questions filtered by topic"""
-        if not self.current_quiz:
-            print("❌ No quiz loaded! Please load a quiz first.")
-            input("Press Enter to continue...")
-            return
+        print("\n📚 Practice by Topic")
+        print("-" * 30)
         
         # Get available topics
-        topics = list(set(q.topic for q in self.current_quiz.questions))
+        topics = self.manager.get_available_topics()
         
-        print(f"\n📚 Practice by Topic")
-        print("-" * 20)
+        if not topics:
+            print("No quiz topics found in the quizzes directory.")
+            print("Would you like to create sample quizzes? (y/n)")
+            if input().strip().lower() == 'y':
+                self.manager.create_sample_quiz()
+                topics = self.manager.get_available_topics()
+                if not topics:
+                    input("Press Enter to continue...")
+                    return
+            else:
+                input("Press Enter to continue...")
+                return
+        
+        # Display available topics with question counts
         print("Available topics:")
+        topic_questions = {}
         for i, topic in enumerate(topics, 1):
-            count = len([q for q in self.current_quiz.questions if q.topic == topic])
-            print(f"{i}. {topic} ({count} questions)")
+            try:
+                questions = self.manager.load_questions_by_topic(topic)
+                topic_questions[topic] = questions
+                print(f"{i}. {topic} ({len(questions)} questions)")
+            except Exception as e:
+                print(f"❌ Error loading topic {topic}: {e}")
         
         try:
-            choice = int(input(f"\nSelect topic (1-{len(topics)}): "))
-            if 1 <= choice <= len(topics):
-                selected_topic = topics[choice - 1]
-                topic_questions = self.current_quiz.get_questions_by_topic(selected_topic)
-                self._practice_questions(topic_questions, f"Topic: {selected_topic}")
+            choice = input(f"\nSelect topic (1-{len(topics)}): ").strip()
+            if not choice:
+                print("❌ No topic selected!")
+                input("Press Enter to continue...")
+                return
+                
+            topic_index = int(choice) - 1
+            if 0 <= topic_index < len(topics):
+                selected_topic = topics[topic_index]
+                questions = topic_questions.get(selected_topic, [])
+                
+                if not questions:
+                    print(f"❌ No questions found for topic: {selected_topic}")
+                    input("Press Enter to continue...")
+                    return
+                    
+                self._practice_questions(questions, f"Topic: {selected_topic}")
             else:
                 print("❌ Invalid choice!")
                 input("Press Enter to continue...")
@@ -382,17 +471,32 @@ class QuizCLI:
         input("\nPress Enter to continue...")
     
     def list_quiz_files(self):
-        """List all available quiz files"""
-        print(f"\n📁 Available Quiz Files")
-        print("-" * 25)
+        """List all available quiz topics"""
+        print(f"\n📚 Available Quiz Topics")
+        print("-" * 30)
         
-        yaml_files = list(Path(".").glob("*.yaml")) + list(Path(".").glob("*.yml"))
+        topics = self.manager.get_available_topics()
         
-        if not yaml_files:
-            print("No YAML quiz files found in current directory.")
-        else:
-            for file in yaml_files:
-                print(f"  📄 {file.name}")
+        if not topics:
+            print("No quiz topics found in the quizzes directory.")
+            print("Would you like to create sample quizzes? (y/n)")
+            if input().strip().lower() == 'y':
+                self.manager.create_sample_quiz()
+                topics = self.manager.get_available_topics()
+                if not topics:
+                    input("Press Enter to continue...")
+                    return
+            else:
+                input("Press Enter to continue...")
+                return
+        
+        print(f"Found {len(topics)} topic(s) in {self.manager.quizzes_dir}:")
+        for i, topic in enumerate(topics, 1):
+            try:
+                questions = self.manager.load_questions_by_topic(topic)
+                print(f"{i}. {topic} ({len(questions)} questions)")
+            except Exception as e:
+                print(f"❌ Error loading topic {topic}: {e}")
         
         input("\nPress Enter to continue...")
     

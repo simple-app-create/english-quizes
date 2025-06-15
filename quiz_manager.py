@@ -6,9 +6,12 @@ for the English Language Arts quiz application.
 """
 
 import yaml
+import os
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Union
 from pathlib import Path
+from dataclasses import dataclass
+from collections import defaultdict
 
 
 class QuizMetadata(BaseModel):
@@ -82,47 +85,150 @@ class Quiz(BaseModel):
 class QuizManager:
     """Main class for managing quiz operations"""
     
-    def __init__(self):
+    def __init__(self, quizzes_dir: str = 'quizzes'):
+        self.quizzes_dir = Path(quizzes_dir)
         self.current_quiz: Optional[Quiz] = None
+        self.available_topics: List[str] = []
+        self._discover_topics()
     
-    def load_quiz_from_file(self, file_path: str | Path) -> Quiz:
+    def _discover_topics(self) -> None:
+        """Discover available quiz topics from the quizzes directory"""
+        if not self.quizzes_dir.exists():
+            return
+            
+        self.available_topics = [
+            f.stem.replace('_', ' ').title()
+            for f in self.quizzes_dir.glob('*.yaml')
+            if f.is_file()
+        ]
+    
+    def get_available_topics(self) -> List[str]:
+        """Get list of available quiz topics"""
+        return self.available_topics
+    
+    def load_questions_by_topic(self, topic: str) -> List[Question]:
         """
-        Load quiz from YAML file
+        Load questions for a specific topic
         
         Args:
-            file_path: Path to the YAML quiz file
+            topic: The topic to load questions for
+            
+        Returns:
+            List of Question objects for the specified topic
+        """
+        # Convert topic to filename format (lowercase with underscores)
+        filename = f"{topic.lower().replace(' ', '_')}.yaml"
+        file_path = self.quizzes_dir / filename
+        
+        if not file_path.exists():
+            raise FileNotFoundError(f"No quiz file found for topic: {topic}")
+            
+        try:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                quiz_data = yaml.safe_load(file)
+                
+            # Convert each question dict to Question object
+            questions = [Question(**q) for q in quiz_data.get('questions', [])]
+            
+            # Validate all questions
+            for q in questions:
+                if not q.validate_correct_answer():
+                    raise ValueError(f"Invalid correct_answer in question ID {q.id}")
+                    
+            return questions
+            
+        except yaml.YAMLError as e:
+            raise yaml.YAMLError(f"Error parsing YAML file {file_path}: {e}")
+    
+    def load_questions(self, topics: Union[str, List[str]] = None) -> List[Question]:
+        """
+        Load questions from one or more topic files
+        
+        Args:
+            topics: Single topic or list of topics to load. If None, loads all available topics.
+            
+        Returns:
+            Combined list of Question objects from specified topics
+        """
+        if topics is None:
+            topics = self.available_topics
+        elif isinstance(topics, str):
+            topics = [topics]
+            
+        all_questions = []
+        
+        for topic in topics:
+            try:
+                questions = self.load_questions_by_topic(topic)
+                all_questions.extend(questions)
+            except FileNotFoundError:
+                print(f"Warning: No questions found for topic: {topic}")
+                continue
+                
+        return all_questions
+    
+    def load_quiz_from_file(self, file_path: Union[str, Path] = None, 
+                         topics: Union[str, List[str]] = None) -> Quiz:
+        """
+        Load quiz from YAML file(s)
+        
+        Args:
+            file_path: Path to a single YAML quiz file (legacy support)
+            topics: Topic or list of topics to load questions from
             
         Returns:
             Quiz: Loaded and validated quiz object
             
         Raises:
-            FileNotFoundError: If the file doesn't exist
+            FileNotFoundError: If no questions are found
             yaml.YAMLError: If YAML parsing fails
             ValueError: If quiz validation fails
         """
-        file_path = Path(file_path)
+        if file_path is not None:
+            # Legacy support for loading from a single file
+            file_path = Path(file_path)
+            if not file_path.exists():
+                raise FileNotFoundError(f"Quiz file not found: {file_path}")
+                
+            try:
+                with open(file_path, 'r', encoding='utf-8') as file:
+                    quiz_data = yaml.safe_load(file)
+                
+                # Create Quiz object with validation
+                quiz = Quiz(**quiz_data)
+                
+                # Additional validation
+                if not quiz.validate_all_questions():
+                    raise ValueError("Some questions have invalid correct_answer indices")
+                
+                self.current_quiz = quiz
+                return quiz
+                
+            except yaml.YAMLError as e:
+                raise yaml.YAMLError(f"Error parsing YAML file: {e}")
+            except Exception as e:
+                raise ValueError(f"Error creating quiz object: {e}")
         
-        if not file_path.exists():
-            raise FileNotFoundError(f"Quiz file not found: {file_path}")
+        # Load questions from topic files
+        questions = self.load_questions(topics)
         
-        try:
-            with open(file_path, 'r', encoding='utf-8') as file:
-                quiz_data = yaml.safe_load(file)
-            
-            # Create Quiz object with validation
-            quiz = Quiz(**quiz_data)
-            
-            # Additional validation
-            if not quiz.validate_all_questions():
-                raise ValueError("Some questions have invalid correct_answer indices")
-            
-            self.current_quiz = quiz
-            return quiz
-            
-        except yaml.YAMLError as e:
-            raise yaml.YAMLError(f"Error parsing YAML file: {e}")
-        except Exception as e:
-            raise ValueError(f"Error creating quiz object: {e}")
+        if not questions:
+            raise FileNotFoundError("No questions found for the specified topics")
+        
+        # Create a quiz with the loaded questions
+        quiz_data = {
+            "quiz_metadata": {
+                "title": f"{' + '.join(topics) if topics else 'Comprehensive'} Quiz",
+                "version": "1.0",
+                "created_date": "2025-06-15",
+                "total_questions": len(questions),
+                "description": f"Quiz covering {', '.join(topics) if topics else 'various topics'}"
+            },
+            "questions": [q.model_dump() for q in questions]
+        }
+        
+        self.current_quiz = Quiz(**quiz_data)
+        return self.current_quiz
     
     def save_quiz_to_file(self, quiz: Quiz, file_path: str | Path) -> None:
         """
@@ -146,15 +252,9 @@ class QuizManager:
     
     def create_sample_quiz(self) -> Quiz:
         """Create a sample quiz for testing purposes"""
-        sample_data = {
-            "quiz_metadata": {
-                "title": "English Language Arts Sample Quiz",
-                "version": "1.0",
-                "created_date": "2025-06-15",
-                "total_questions": 3,
-                "description": "A sample quiz covering various ELA topics"
-            },
-            "questions": [
+        # Create sample topic files if they don't exist
+        sample_questions = {
+            "reading_comprehension": [
                 {
                     "id": 1,
                     "topic": "Reading Comprehension",
@@ -172,7 +272,9 @@ class QuizManager:
                     "explanation_zh_TW": "",
                     "explanation_zh_CN": "",
                     "tags": ["pangram", "alphabet"]
-                },
+                }
+            ],
+            "grammar": [
                 {
                     "id": 2,
                     "topic": "Grammar",
@@ -189,7 +291,9 @@ class QuizManager:
                     "explanation_zh_TW": "",
                     "explanation_zh_CN": "",
                     "tags": ["subject-verb agreement", "singular", "plural"]
-                },
+                }
+            ],
+            "spelling": [
                 {
                     "id": 3,
                     "topic": "Spelling",
@@ -208,6 +312,31 @@ class QuizManager:
                     "tags": ["i before e", "spelling rules"]
                 }
             ]
+        }
+        
+        # Create the quizzes directory if it doesn't exist
+        self.quizzes_dir.mkdir(exist_ok=True)
+        
+        # Save sample questions to topic files
+        for topic, questions in sample_questions.items():
+            file_path = self.quizzes_dir / f"{topic}.yaml"
+            with open(file_path, 'w', encoding='utf-8') as f:
+                yaml.dump({"questions": questions}, f, default_flow_style=False, allow_unicode=True)
+        
+        # Reload available topics
+        self._discover_topics()
+        
+        # Create a combined quiz data structure
+        all_questions = [q for sublist in sample_questions.values() for q in sublist]
+        sample_data = {
+            "quiz_metadata": {
+                "title": "English Language Arts Sample Quiz",
+                "version": "1.0",
+                "created_date": "2025-06-15",
+                "total_questions": len(all_questions),
+                "description": "A sample quiz covering various ELA topics"
+            },
+            "questions": all_questions
         }
         
         return Quiz(**sample_data)
@@ -239,12 +368,11 @@ def load_quiz(file_path: str | Path) -> Quiz:
     return manager.load_quiz_from_file(file_path)
 
 
-def create_sample_quiz_file(file_path: str | Path = "sample_quiz.yaml") -> None:
-    """Create a sample quiz YAML file"""
+def create_sample_quiz_file() -> None:
+    """Create sample topic YAML files in the quizzes directory"""
     manager = QuizManager()
     sample_quiz = manager.create_sample_quiz()
-    manager.save_quiz_to_file(sample_quiz, file_path)
-    print(f"Sample quiz created at: {file_path}")
+    print(f"Sample quiz topics created in: {manager.quizzes_dir}")
 
 
 if __name__ == "__main__":

@@ -263,9 +263,9 @@ def show_quiz_screen():
         <h3>Question {current_index + 1}</h3>
         <p><strong>Topic:</strong> {question.topic} | <strong>Difficulty:</strong> {question.difficulty}</p>
         
-        {f'<h4>📖 Passage:</h4><blockquote>{question.passage}</blockquote><hr>' if question.passage else ''}
+        {f'📖 Passage:<blockquote>{question.passage}</blockquote><hr>' if question.passage else ''}
         
-        <h4>❓ {question.question}</h4>
+        ❓ {question.question}
     </div>
     """, unsafe_allow_html=True)
     

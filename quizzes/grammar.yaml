@@ -1,0 +1,175 @@
+quiz_metadata:
+  title: Grammar Questions
+  version: '1.0'
+  created_date: '2025-06-15'
+  total_questions: 10
+  description: Grammar questions
+questions:
+- id: 2
+  topic: Grammar
+  difficulty: easy
+  question: Which sentence uses the correct form of 'to be'?
+  choices:
+  - I are happy today
+  - You is my friend
+  - She am tired
+  - We are going home
+  correct_answer: 3
+  explanation: '''We are'' is the correct subject-verb agreement for the plural pronoun
+    ''we''.'
+  explanation_zh_TW: '''We are'' 是複數代名詞 ''we'' 的正確主詞動詞一致性用法。'
+  tags:
+  - subject-verb agreement
+  - ESL
+  - basic grammar
+- id: 4
+  topic: Grammar
+  difficulty: medium
+  question: Which sentence correctly uses a comma?
+  choices:
+  - After the movie we, went to dinner
+  - After the movie, we went to dinner
+  - After, the movie we went to dinner
+  - After the movie we went, to dinner
+  correct_answer: 1
+  explanation: A comma is needed after an introductory phrase like 'After the movie'.
+  explanation_zh_TW: 在介紹性短語如 'After the movie' 之後需要逗號。
+  tags:
+  - punctuation
+  - comma usage
+  - middle school
+- id: 7
+  topic: Grammar
+  difficulty: medium
+  question: Identify the sentence with correct pronoun usage.
+  choices:
+  - Me and John went to the store
+  - John and I went to the store
+  - John and me went to the store
+  - I and John went to the store
+  correct_answer: 1
+  explanation: 'Use ''I'' as a subject pronoun. Also, it''s polite to put the other
+    person first: ''John and I''.'
+  explanation_zh_TW: 使用 'I' 作為主詞代名詞。另外，禮貌的做法是把對方放在前面：'John and I'。
+  tags:
+  - pronouns
+  - subject pronouns
+  - middle school
+- id: 9
+  topic: Grammar
+  difficulty: hard
+  question: Choose the sentence with correct parallel structure.
+  choices:
+  - She enjoys reading, writing, and to paint
+  - She enjoys reading, writing, and painting
+  - She enjoys to read, writing, and painting
+  - She enjoys reading, to write, and painting
+  correct_answer: 1
+  explanation: 'Parallel structure requires consistent verb forms: ''reading, writing,
+    and painting'' all use -ing forms.'
+  explanation_zh_TW: 平行結構需要一致的動詞形式：'reading, writing, and painting' 都使用 -ing 形式。
+  tags:
+  - parallel structure
+  - advanced grammar
+  - SAT level
+- id: 11
+  topic: Grammar
+  difficulty: easy
+  question: Which sentence shows correct capitalization?
+  choices:
+  - we went to new york city
+  - We went to New york City
+  - We went to New York City
+  - we Went To new York city
+  correct_answer: 2
+  explanation: Proper nouns like 'New York City' and the first word of a sentence
+    should be capitalized.
+  explanation_zh_TW: 專有名詞如 'New York City' 和句子的第一個字應該大寫。
+  tags:
+  - capitalization
+  - proper nouns
+  - K12
+- id: 13
+  topic: Grammar
+  difficulty: medium
+  question: Which sentence uses the correct past tense?
+  choices:
+  - Yesterday, I go to the library
+  - Yesterday, I gone to the library
+  - Yesterday, I went to the library
+  - Yesterday, I going to the library
+  correct_answer: 2
+  explanation: '''Went'' is the correct past tense form of the irregular verb ''go''.'
+  explanation_zh_TW: '''Went'' 是不規則動詞 ''go'' 的正確過去式形式。'
+  tags:
+  - past tense
+  - irregular verbs
+  - ESL
+- id: 16
+  topic: Grammar
+  difficulty: hard
+  question: Identify the sentence with the correct use of 'who' vs. 'whom'.
+  choices:
+  - Who did you give the book to?
+  - Whom is coming to dinner?
+  - The person whom called is here
+  - To whom did you give the book?
+  correct_answer: 3
+  explanation: '''Whom'' is used as an object of a preposition. ''To whom'' is correct
+    because ''whom'' is the object of ''to''.'
+  explanation_zh_TW: '''Whom'' 用作介詞的受詞。''To whom'' 是正確的，因為 ''whom'' 是 ''to'' 的受詞。'
+  tags:
+  - who vs whom
+  - pronouns
+  - SAT level
+- id: 18
+  topic: Grammar
+  difficulty: medium
+  question: Which sentence correctly uses an apostrophe?
+  choices:
+  - The dog wagged it's tail
+  - The dogs' toy was lost
+  - The dog's toy was lost
+  - The dogs toy's was lost
+  correct_answer: 2
+  explanation: '''The dog''s toy'' shows possession - the toy belongs to the dog.
+    ''Its'' (possessive) doesn''t need an apostrophe.'
+  explanation_zh_TW: '''The dog''s toy'' 表示所有格 - 玩具屬於狗。''Its''（所有格）不需要撇號。'
+  tags:
+  - apostrophes
+  - possession
+  - middle school
+- id: 20
+  topic: Grammar
+  difficulty: hard
+  question: Which sentence demonstrates correct subjunctive mood?
+  choices:
+  - If I was rich, I would travel the world
+  - If I were rich, I would travel the world
+  - If I am rich, I would travel the world
+  - If I will be rich, I would travel the world
+  correct_answer: 1
+  explanation: 'The subjunctive mood uses ''were'' instead of ''was'' in hypothetical
+    situations: ''If I were rich''.'
+  explanation_zh_TW: 假設語氣在假設情況中使用 'were' 而不是 'was'：'If I were rich'。
+  tags:
+  - subjunctive mood
+  - advanced grammar
+  - SAT level
+- id: 23
+  topic: Grammar
+  difficulty: easy
+  question: 'Which word is an adjective in this sentence: ''The red car drove quickly
+    down the narrow street''?'
+  choices:
+  - drove
+  - quickly
+  - red
+  - street
+  correct_answer: 2
+  explanation: '''Red'' describes the car, making it an adjective. ''Narrow'' is also
+    an adjective, but it''s not among the choices.'
+  tags:
+  - parts of speech
+  - adjectives
+  - K12

@@ -1,0 +1,104 @@
+quiz_metadata:
+  title: Spelling Questions
+  version: '1.0'
+  created_date: '2025-06-15'
+  total_questions: 6
+  description: Spelling questions
+questions:
+- id: 3
+  topic: Spelling
+  difficulty: easy
+  question: Which word is spelled correctly?
+  choices:
+  - Frend
+  - Friend
+  - Freind
+  - Friand
+  correct_answer: 1
+  explanation: Friend is spelled F-R-I-E-N-D.
+  explanation_zh_TW: Friend 的正確拼法是 F-R-I-E-N-D。
+  tags:
+  - basic spelling
+  - K12
+  - common words
+- id: 6
+  topic: Spelling
+  difficulty: medium
+  question: Which word follows the 'i before e except after c' rule?
+  choices:
+  - Believe
+  - Receive
+  - Weird
+  - Height
+  correct_answer: 0
+  explanation: '''Believe'' follows the rule: i before e when not after c. ''Receive''
+    has e before i after c.'
+  explanation_zh_TW: '''Believe'' 遵循規則：不在 c 之後時，i 在 e 之前。''Receive'' 在 c 之後是 e 在 i
+    之前。'
+  tags:
+  - spelling rules
+  - i before e
+  - middle school
+- id: 10
+  topic: Spelling
+  difficulty: hard
+  question: Which word is spelled correctly?
+  choices:
+  - Embarassment
+  - Embarasment
+  - Embarrassment
+  - Embarrasment
+  correct_answer: 2
+  explanation: 'Embarrassment has double ''r'' and double ''s'': e-m-b-a-r-r-a-s-s-m-e-n-t.'
+  explanation_zh_TW: Embarrassment 有雙重 'r' 和雙重 's'：e-m-b-a-r-r-a-s-s-m-e-n-t。
+  tags:
+  - difficult spelling
+  - double letters
+  - high school
+- id: 14
+  topic: Spelling
+  difficulty: medium
+  question: Which word contains a silent letter?
+  choices:
+  - Phone
+  - Cat
+  - Knee
+  - Box
+  correct_answer: 2
+  explanation: In 'knee', the 'k' is silent. You only hear the 'nee' sound.
+  explanation_zh_TW: 在 'knee' 中，'k' 是無聲字母。你只聽到 'nee' 的聲音。
+  tags:
+  - silent letters
+  - phonics
+  - middle school
+- id: 17
+  topic: Spelling
+  difficulty: easy
+  question: Which word is spelled correctly?
+  choices:
+  - Becaus
+  - Becuase
+  - Because
+  - Becase
+  correct_answer: 2
+  explanation: Because is spelled B-E-C-A-U-S-E.
+  explanation_zh_TW: Because 的正確拼法是 B-E-C-A-U-S-E。
+  tags:
+  - common words
+  - basic spelling
+  - K12
+- id: 21
+  topic: Spelling
+  difficulty: hard
+  question: Which word is spelled correctly?
+  choices:
+  - Necessary
+  - Neccessary
+  - Necesary
+  - Necessery
+  correct_answer: 0
+  explanation: 'Necessary has one ''c'' and double ''s'': n-e-c-e-s-s-a-r-y.'
+  tags:
+  - difficult spelling
+  - commonly misspelled
+  - high school
