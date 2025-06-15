@@ -1,0 +1,55 @@
+quiz_metadata:
+  title: English Language Arts Sample Quiz
+  version: '1.0'
+  created_date: '2025-06-15'
+  total_questions: 3
+  description: A sample quiz covering various ELA topics
+questions:
+- id: 1
+  topic: Reading Comprehension
+  difficulty: easy
+  question: Why is this sentence famous?
+  choices:
+  - It contains every letter of the alphabet
+  - It's the shortest sentence in English
+  - It was written by Shakespeare
+  - It contains no vowels
+  correct_answer: 0
+  passage: The quick brown fox jumps over the lazy dog. This sentence is famous because
+    it contains every letter of the English alphabet at least once.
+  explanation: This sentence is called a pangram because it contains all 26 letters
+    of the English alphabet.
+  tags:
+  - pangram
+  - alphabet
+- id: 2
+  topic: Grammar
+  difficulty: medium
+  question: Which sentence uses correct subject-verb agreement?
+  choices:
+  - The group of students are studying
+  - The group of students is studying
+  - The groups of student is studying
+  - The groups of student are studying
+  correct_answer: 1
+  passage: null
+  explanation: The subject 'group' is singular, so it takes the singular verb 'is'.
+  tags:
+  - subject-verb agreement
+  - singular
+  - plural
+- id: 3
+  topic: Spelling
+  difficulty: easy
+  question: Which word is spelled correctly?
+  choices:
+  - Recieve
+  - Receive
+  - Recive
+  - Receeve
+  correct_answer: 1
+  passage: null
+  explanation: 'Remember: ''I before E except after C'' - receive follows this rule.'
+  tags:
+  - i before e
+  - spelling rules

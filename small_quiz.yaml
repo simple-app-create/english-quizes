@@ -1,0 +1,357 @@
+quiz_metadata:
+  title: "Comprehensive English Language Arts Quiz"
+  version: "1.0"
+  created_date: "2025-06-15"
+  total_questions: 23
+  description: "A comprehensive quiz covering English Language Arts topics from K12 and ESL through SAT level, including Reading Comprehension, Grammar, Spelling, and Sentence Correction"
+
+questions:
+  - id: 1
+    topic: "Reading Comprehension"
+    difficulty: "easy"
+    passage: |
+      Dogs are loyal animals that make great pets. They need food, water, and exercise every day. 
+      Most dogs love to play fetch and go for walks with their owners.
+    question: "According to the passage, what do dogs need every day?"
+    choices:
+      - "Only food and water"
+      - "Food, water, and exercise"
+      - "Just exercise and play"
+      - "Only walks with owners"
+    correct_answer: 1
+    explanation: "The passage clearly states that dogs need food, water, and exercise every day."
+    explanation_zh_TW: "文章明確指出狗狗每天需要食物、水和運動。"
+    tags: ["basic reading", "K12", "comprehension"]
+
+  - id: 2
+    topic: "Grammar"
+    difficulty: "easy"
+    question: "Which sentence uses the correct form of 'to be'?"
+    choices:
+      - "I are happy today"
+      - "You is my friend"
+      - "She am tired"
+      - "We are going home"
+    correct_answer: 3
+    explanation: "'We are' is the correct subject-verb agreement for the plural pronoun 'we'."
+    explanation_zh_TW: "'We are' 是複數代名詞 'we' 的正確主詞動詞一致性用法。"
+    tags: ["subject-verb agreement", "ESL", "basic grammar"]
+
+  - id: 3
+    topic: "Spelling"
+    difficulty: "easy"
+    question: "Which word is spelled correctly?"
+    choices:
+      - "Frend"
+      - "Friend"
+      - "Freind"
+      - "Friand"
+    correct_answer: 1
+    explanation: "Friend is spelled F-R-I-E-N-D."
+    explanation_zh_TW: "Friend 的正確拼法是 F-R-I-E-N-D。"
+    tags: ["basic spelling", "K12", "common words"]
+
+  - id: 4
+    topic: "Grammar"
+    difficulty: "medium"
+    question: "Which sentence correctly uses a comma?"
+    choices:
+      - "After the movie we, went to dinner"
+      - "After the movie, we went to dinner"
+      - "After, the movie we went to dinner"
+      - "After the movie we went, to dinner"
+    correct_answer: 1
+    explanation: "A comma is needed after an introductory phrase like 'After the movie'."
+    explanation_zh_TW: "在介紹性短語如 'After the movie' 之後需要逗號。"
+    tags: ["punctuation", "comma usage", "middle school"]
+
+  - id: 5
+    topic: "Reading Comprehension"
+    difficulty: "medium"
+    passage: |
+      The invention of the printing press in the 15th century revolutionized the spread of information. 
+      Before this innovation, books were copied by hand, making them expensive and rare. The printing 
+      press allowed books to be produced quickly and cheaply, leading to increased literacy rates 
+      throughout Europe.
+    question: "What was the main effect of the printing press invention?"
+    choices:
+      - "Books became more expensive"
+      - "People stopped reading books"
+      - "Books became cheaper and more available"
+      - "Only wealthy people could read"
+    correct_answer: 2
+    explanation: "The passage states that the printing press allowed books to be produced quickly and cheaply, increasing availability."
+    explanation_zh_TW: "文章指出印刷機讓書籍能夠快速且便宜地生產，增加了書籍的可獲得性。"
+    tags: ["historical reading", "cause and effect", "middle school"]
+
+  - id: 6
+    topic: "Spelling"
+    difficulty: "medium"
+    question: "Which word follows the 'i before e except after c' rule?"
+    choices:
+      - "Believe"
+      - "Receive"
+      - "Weird"
+      - "Height"
+    correct_answer: 0
+    explanation: "'Believe' follows the rule: i before e when not after c. 'Receive' has e before i after c."
+    explanation_zh_TW: "'Believe' 遵循規則：不在 c 之後時，i 在 e 之前。'Receive' 在 c 之後是 e 在 i 之前。"
+    tags: ["spelling rules", "i before e", "middle school"]
+
+  - id: 7
+    topic: "Grammar"
+    difficulty: "medium"
+    question: "Identify the sentence with correct pronoun usage."
+    choices:
+      - "Me and John went to the store"
+      - "John and I went to the store"
+      - "John and me went to the store"
+      - "I and John went to the store"
+    correct_answer: 1
+    explanation: "Use 'I' as a subject pronoun. Also, it's polite to put the other person first: 'John and I'."
+    explanation_zh_TW: "使用 'I' 作為主詞代名詞。另外，禮貌的做法是把對方放在前面：'John and I'。"
+    tags: ["pronouns", "subject pronouns", "middle school"]
+
+  - id: 8
+    topic: "Reading Comprehension"
+    difficulty: "hard"
+    passage: |
+      The concept of cognitive dissonance, introduced by Leon Festinger in 1957, describes the mental 
+      discomfort experienced when holding contradictory beliefs simultaneously. This psychological 
+      phenomenon explains why people often rationalize their behavior to maintain consistency in 
+      their belief systems, even when presented with conflicting evidence.
+    question: "According to the passage, cognitive dissonance primarily explains:"
+    choices:
+      - "Why people always change their beliefs when given new evidence"
+      - "How people rationalize behavior to maintain consistent beliefs"
+      - "Why contradictory beliefs cause physical discomfort"
+      - "How Leon Festinger developed his theories in 1957"
+    correct_answer: 1
+    explanation: "The passage states that cognitive dissonance explains why people rationalize behavior to maintain consistency in beliefs."
+    explanation_zh_TW: "文章指出認知失調解釋了為什麼人們會為了保持信念一致性而將行為合理化。"
+    tags: ["advanced reading", "psychology", "SAT level"]
+
+  - id: 9
+    topic: "Grammar"
+    difficulty: "hard"
+    question: "Choose the sentence with correct parallel structure."
+    choices:
+      - "She enjoys reading, writing, and to paint"
+      - "She enjoys reading, writing, and painting"
+      - "She enjoys to read, writing, and painting"
+      - "She enjoys reading, to write, and painting"
+    correct_answer: 1
+    explanation: "Parallel structure requires consistent verb forms: 'reading, writing, and painting' all use -ing forms."
+    explanation_zh_TW: "平行結構需要一致的動詞形式：'reading, writing, and painting' 都使用 -ing 形式。"
+    tags: ["parallel structure", "advanced grammar", "SAT level"]
+
+  - id: 10
+    topic: "Spelling"
+    difficulty: "hard"
+    question: "Which word is spelled correctly?"
+    choices:
+      - "Embarassment"
+      - "Embarasment"
+      - "Embarrassment"
+      - "Embarrasment"
+    correct_answer: 2
+    explanation: "Embarrassment has double 'r' and double 's': e-m-b-a-r-r-a-s-s-m-e-n-t."
+    explanation_zh_TW: "Embarrassment 有雙重 'r' 和雙重 's'：e-m-b-a-r-r-a-s-s-m-e-n-t。"
+    tags: ["difficult spelling", "double letters", "high school"]
+
+  - id: 11
+    topic: "Grammar"
+    difficulty: "easy"
+    question: "Which sentence shows correct capitalization?"
+    choices:
+      - "we went to new york city"
+      - "We went to New york City"
+      - "We went to New York City"
+      - "we Went To new York city"
+    correct_answer: 2
+    explanation: "Proper nouns like 'New York City' and the first word of a sentence should be capitalized."
+    explanation_zh_TW: "專有名詞如 'New York City' 和句子的第一個字應該大寫。"
+    tags: ["capitalization", "proper nouns", "K12"]
+
+  - id: 12
+    topic: "Reading Comprehension"
+    difficulty: "easy"
+    passage: |
+      Maria planted tomatoes in her garden last spring. She watered them every day and gave them 
+      plant food once a week. By summer, she had grown big, red tomatoes that her family enjoyed 
+      in salads.
+    question: "How often did Maria water her tomatoes?"
+    choices:
+      - "Once a week"
+      - "Every day"
+      - "Only in summer"
+      - "When they turned red"
+    correct_answer: 1
+    explanation: "The passage states Maria 'watered them every day'."
+    explanation_zh_TW: "文章指出瑪麗亞「每天澆水」。"
+    tags: ["detail comprehension", "ESL", "basic reading"]
+
+  - id: 13
+    topic: "Grammar"
+    difficulty: "medium"
+    question: "Which sentence uses the correct past tense?"
+    choices:
+      - "Yesterday, I go to the library"
+      - "Yesterday, I gone to the library"
+      - "Yesterday, I went to the library"
+      - "Yesterday, I going to the library"
+    correct_answer: 2
+    explanation: "'Went' is the correct past tense form of the irregular verb 'go'."
+    explanation_zh_TW: "'Went' 是不規則動詞 'go' 的正確過去式形式。"
+    tags: ["past tense", "irregular verbs", "ESL"]
+
+  - id: 14
+    topic: "Spelling"
+    difficulty: "medium"
+    question: "Which word contains a silent letter?"
+    choices:
+      - "Phone"
+      - "Cat"
+      - "Knee"
+      - "Box"
+    correct_answer: 2
+    explanation: "In 'knee', the 'k' is silent. You only hear the 'nee' sound."
+    explanation_zh_TW: "在 'knee' 中，'k' 是無聲字母。你只聽到 'nee' 的聲音。"
+    tags: ["silent letters", "phonics", "middle school"]
+
+  - id: 15
+    topic: "Reading Comprehension"
+    difficulty: "medium"
+    passage: |
+      Climate change refers to long-term shifts in global temperatures and weather patterns. While 
+      climate variations occur naturally, scientific evidence shows that human activities have been 
+      the main driver of climate change since the mid-20th century, primarily through the emission 
+      of greenhouse gases.
+    question: "According to the passage, what has been the main cause of climate change since the mid-20th century?"
+    choices:
+      - "Natural climate variations"
+      - "Changes in global temperatures"
+      - "Human activities and greenhouse gas emissions"
+      - "Long-term weather pattern shifts"
+    correct_answer: 2
+    explanation: "The passage states that human activities have been the main driver since the mid-20th century."
+    explanation_zh_TW: "文章指出自20世紀中期以來，人類活動一直是氣候變化的主要驅動因素。"
+    tags: ["science reading", "cause and effect", "high school"]
+
+  - id: 16
+    topic: "Grammar"
+    difficulty: "hard"
+    question: "Identify the sentence with the correct use of 'who' vs. 'whom'."
+    choices:
+      - "Who did you give the book to?"
+      - "Whom is coming to dinner?"
+      - "The person whom called is here"
+      - "To whom did you give the book?"
+    correct_answer: 3
+    explanation: "'Whom' is used as an object of a preposition. 'To whom' is correct because 'whom' is the object of 'to'."
+    explanation_zh_TW: "'Whom' 用作介詞的受詞。'To whom' 是正確的，因為 'whom' 是 'to' 的受詞。"
+    tags: ["who vs whom", "pronouns", "SAT level"]
+
+  - id: 17
+    topic: "Spelling"
+    difficulty: "easy"
+    question: "Which word is spelled correctly?"
+    choices:
+      - "Becaus"
+      - "Becuase"
+      - "Because"
+      - "Becase"
+    correct_answer: 2
+    explanation: "Because is spelled B-E-C-A-U-S-E."
+    explanation_zh_TW: "Because 的正確拼法是 B-E-C-A-U-S-E。"
+    tags: ["common words", "basic spelling", "K12"]
+
+  - id: 18
+    topic: "Grammar"
+    difficulty: "medium"
+    question: "Which sentence correctly uses an apostrophe?"
+    choices:
+      - "The dog wagged it's tail"
+      - "The dogs' toy was lost"
+      - "The dog's toy was lost"
+      - "The dogs toy's was lost"
+    correct_answer: 2
+    explanation: "'The dog's toy' shows possession - the toy belongs to the dog. 'Its' (possessive) doesn't need an apostrophe."
+    explanation_zh_TW: "'The dog's toy' 表示所有格 - 玩具屬於狗。'Its'（所有格）不需要撇號。"
+    tags: ["apostrophes", "possession", "middle school"]
+
+  - id: 19
+    topic: "Reading Comprehension"
+    difficulty: "hard"
+    passage: |
+      The unreliable narrator is a literary device where the credibility of the narrator is 
+      compromised, often revealing more about the narrator's psychology than the actual events. 
+      This technique creates ambiguity and forces readers to question the truth of the narrative, 
+      ultimately engaging them as active participants in constructing meaning.
+    question: "The primary effect of using an unreliable narrator is to:"
+    choices:
+      - "Make the story easier to understand"
+      - "Provide clear information about events"
+      - "Engage readers in actively questioning the narrative"
+      - "Focus attention on the narrator's credibility"
+    correct_answer: 2
+    explanation: "The passage states this technique 'forces readers to question the truth' and engages them as 'active participants'."
+    explanation_zh_TW: "文章指出這種技巧「迫使讀者質疑真相」並讓他們成為「主動參與者」。"
+    tags: ["literary devices", "analysis", "SAT level"]
+
+  - id: 20
+    topic: "Grammar"
+    difficulty: "hard"
+    question: "Which sentence demonstrates correct subjunctive mood?"
+    choices:
+      - "If I was rich, I would travel the world"
+      - "If I were rich, I would travel the world"
+      - "If I am rich, I would travel the world"
+      - "If I will be rich, I would travel the world"
+    correct_answer: 1
+    explanation: "The subjunctive mood uses 'were' instead of 'was' in hypothetical situations: 'If I were rich'."
+    explanation_zh_TW: "假設語氣在假設情況中使用 'were' 而不是 'was'：'If I were rich'。"
+    tags: ["subjunctive mood", "advanced grammar", "SAT level"]
+
+  - id: 21
+    topic: "Spelling"
+    difficulty: "hard"
+    question: "Which word is spelled correctly?"
+    choices:
+      - "Necessary"
+      - "Neccessary"
+      - "Necesary"
+      - "Necessery"
+    correct_answer: 0
+    explanation: "Necessary has one 'c' and double 's': n-e-c-e-s-s-a-r-y."
+    tags: ["difficult spelling", "commonly misspelled", "high school"]
+
+  - id: 22
+    topic: "Reading Comprehension"
+    difficulty: "medium"
+    passage: |
+      Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to 
+      create glucose and oxygen. This process is essential for life on Earth because it produces 
+      the oxygen we breathe and forms the base of most food chains.
+    question: "Why is photosynthesis essential for life on Earth?"
+    choices:
+      - "It creates sunlight for plants"
+      - "It produces oxygen and forms the base of food chains"
+      - "It helps plants grow taller"
+      - "It removes water from the environment"
+    correct_answer: 1
+    explanation: "The passage states photosynthesis produces oxygen we breathe and forms the base of food chains."
+    tags: ["science reading", "process explanation", "middle school"]
+
+  - id: 23
+    topic: "Grammar"
+    difficulty: "easy"
+    question: "Which word is an adjective in this sentence: 'The red car drove quickly down the narrow street'?"
+    choices:
+      - "drove"
+      - "quickly"
+      - "red"
+      - "street"
+    correct_answer: 2
+    explanation: "'Red' describes the car, making it an adjective. 'Narrow' is also an adjective, but it's not among the choices."
+    tags: ["parts of speech", "adjectives", "K12"]

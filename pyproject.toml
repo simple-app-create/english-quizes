@@ -1,0 +1,13 @@
+[project]
+name = "english-quiz"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "dotenv>=0.9.9",
+    "googletrans==4.0.0rc1",
+    "pydantic>=2.11.7",
+    "pyyaml>=6.0.2",
+    "streamlit>=1.45.1",
+]
