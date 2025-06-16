@@ -4,6 +4,14 @@ Translation module for English Quiz App
 Supports Traditional Chinese (default) and English UI languages.
 """
 
+try:
+    from googletrans import Translator
+    TRANSLATOR = Translator()
+    GOOGLETRANS_AVAILABLE = True
+except ImportError:
+    TRANSLATOR = None
+    GOOGLETRANS_AVAILABLE = False
+
 TRANSLATIONS = {
     "zh_TW": {  # Traditional Chinese
         # Main titles and headers
@@ -28,7 +36,30 @@ TRANSLATIONS = {
         # Topic selection
         "practice_by_topic": "📚 依主題練習",
         "available_topics": "### 可用主題：",
+        "select_topic_to_load": "選擇要載入的主題：",
+        "all_topics": "所有主題",
+        "load_selected_topics": "載入選定的主題",
+        "loaded_all_topics": "已載入所有主題，共 {count} 題",
+        "loaded_topic": "已載入 {topic}，共 {count} 題",
+        "select_topic_help": "選擇特定主題或「所有主題」來載入全部內容",
         "back_to_options": "⬅️ 返回選項",
+        
+        # Common UI strings
+        "loading": "載入中...",
+        "please_wait": "請稍候...",
+        "success": "成功！",
+        "failed": "失敗",
+        "retry": "重試",
+        "cancel": "取消",
+        "confirm": "確認",
+        "close": "關閉",
+        "save": "儲存",
+        "delete": "刪除",
+        "edit": "編輯",
+        "view": "檢視",
+        "help": "幫助",
+        "about": "關於",
+        "settings": "設定",
         
         # Difficulty selection
         "practice_by_difficulty": "⚡ 依難度練習",
@@ -93,8 +124,8 @@ TRANSLATIONS = {
         "home": "🏠 首頁",
         "options": "⚙️ 選項",
         "current_quiz": "### 📋 目前測驗",
-        "title": "**標題：**",
-        "questions": "**題目：**",
+        "title": "**標題：** ",
+        "questions": "**題目：** ",
         
         # Language
         "language": "### 🌐 語言",
@@ -135,7 +166,30 @@ TRANSLATIONS = {
         # Topic selection
         "practice_by_topic": "📚 Practice by Topic",
         "available_topics": "### Available Topics:",
+        "select_topic_to_load": "Select a topic to load:",
+        "all_topics": "All Topics",
+        "load_selected_topics": "Load Selected Topics",
+        "loaded_all_topics": "Loaded all topics with {count} questions",
+        "loaded_topic": "Loaded {topic} with {count} questions",
+        "select_topic_help": "Select a specific topic or 'All Topics' to load everything",
         "back_to_options": "⬅️ Back to Options",
+        
+        # Common UI strings
+        "loading": "Loading...",
+        "please_wait": "Please wait...",
+        "success": "Success!",
+        "failed": "Failed",
+        "retry": "Retry",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "close": "Close",
+        "save": "Save",
+        "delete": "Delete",
+        "edit": "Edit",
+        "view": "View",
+        "help": "Help",
+        "about": "About",
+        "settings": "Settings",
         
         # Difficulty selection
         "practice_by_difficulty": "⚡ Practice by Difficulty",
@@ -223,7 +277,7 @@ TRANSLATIONS = {
 
 def get_text(key: str, language: str = "zh_TW", **kwargs) -> str:
     """
-    Get translated text for the given key and language.
+    Get translated text for the given key and language with googletrans fallback.
     
     Args:
         key: Translation key
@@ -246,8 +300,36 @@ def get_text(key: str, language: str = "zh_TW", **kwargs) -> str:
                 return text.format(**kwargs)
             return text
         except KeyError:
-            # Return key if not found in any language
-            return f"[{key}]"
+            # Use googletrans as final fallback
+            if GOOGLETRANS_AVAILABLE:
+                try:
+                    # Convert underscore-separated key to readable text
+                    english_text = key.replace('_', ' ').title()
+                    
+                    # Map language codes to googletrans codes
+                    lang_map = {
+                        'zh_TW': 'zh-tw',
+                        'en': 'en'
+                    }
+                    
+                    target_lang = lang_map.get(language, 'zh-tw')
+                    
+                    if target_lang == 'en':
+                        translated_text = english_text
+                    else:
+                        result = TRANSLATOR.translate(english_text, dest=target_lang)
+                        translated_text = result.text
+                    
+                    if kwargs:
+                        return translated_text.format(**kwargs)
+                    return translated_text
+                    
+                except Exception as e:
+                    # If googletrans fails, return formatted key
+                    return f"[{key}]"
+            else:
+                # Return key if googletrans not available
+                return f"[{key}]"
 
 
 def get_available_languages() -> dict:
