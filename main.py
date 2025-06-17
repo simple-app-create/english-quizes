@@ -13,6 +13,8 @@ import pandas as pd
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 from quiz_manager import QuizManager, Quiz, Question
+
+
 from translations import get_text, get_available_languages, get_language_display_name
 from explanation_translator import get_translated_explanation
 
@@ -24,6 +26,8 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+
 
 
 def load_available_quizzes():
@@ -139,7 +143,7 @@ def show_options_screen():
         try:
             if selected_topic_title == get_text('all_topics', lang):
                 # Load all topics
-                topics = list(available_topics.keys())
+                topics = [info['topic'] for info in available_topics.values()]
                 st.session_state.current_quiz = st.session_state.quiz_manager.load_quiz_from_file(topics=topics)
                 st.success(get_text('loaded_all_topics', lang, count=len(st.session_state.current_quiz.questions)))
             else:
@@ -271,7 +275,7 @@ def show_difficulty_selection():
     try:
         quiz_manager = QuizManager()
         all_questions = quiz_manager.load_questions()
-        for question in all_questions.questions:
+        for question in all_questions:
             if question.difficulty in difficulty_counts:
                 difficulty_counts[question.difficulty] += 1
     except Exception as e:
@@ -377,8 +381,8 @@ def show_quiz_screen():
 
     # Check if we've reached the end of the quiz
     if current_index >= total_questions:
-        show_quiz_results()
-        return
+        st.session_state.screen = 'results'
+        st.rerun()
 
     question = st.session_state.quiz_questions[current_index]
 
@@ -408,22 +412,26 @@ def show_quiz_screen():
 
     st.markdown("---")
 
-    # Question display with better formatting
-    st.markdown(f"""
-    <div class="quiz-question">
-        <h3>Question {current_index + 1}</h3>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-            <span class="badge">Topic: {question.topic}</span>
-            <span class="badge">Difficulty: {question.difficulty.title()}</span>
-        </div>
+    # Question display with simple Streamlit components
+    st.markdown(f"### Question {current_index + 1}")
+    
+    # Show topic and difficulty
+    col1, col2 = st.columns(2)
+    with col1:
+        st.caption(f"📚 Topic: {question.topic}")
+    with col2:
+        st.caption(f"⚡ Difficulty: {question.difficulty.title()}")
+    
+    # Display passage if it exists
+    if question.passage:
+        st.markdown("#### 📖 Reading Passage:")
+        st.info(question.passage)
+    
+    # Display the question
+    st.markdown(f"**❓ {question.question}**")
 
-        {f'<div class="passage"><strong>📖 Passage:</strong><div class="passage-content">{question.passage}</div></div><hr>' if question.passage else ''}
-    """, unsafe_allow_html=True)
-
-    # Display the question and answer choices in a single form
+    # Display the answer choices in a single form
     with st.form(key='quiz_form'):
-        # Display the question
-        st.markdown(f"<p>❓ {question.question}</p>", unsafe_allow_html=True)
 
         # Display answer choices as radio buttons
         options = question.choices
@@ -443,10 +451,10 @@ def show_quiz_screen():
         with col2:
             if st.form_submit_button("Quit Quiz", type="secondary"):
                 if st.session_state.answered_questions > 0:
-                    show_quiz_results()
+                    st.session_state.screen = 'results'
                 else:
                     st.session_state.screen = 'options'
-                    st.rerun()
+                st.rerun()
 
         if submitted:
             if user_answer is None:
@@ -474,7 +482,8 @@ def show_quiz_screen():
                     st.session_state.current_question_index += 1
                     st.rerun()
                 else:
-                    show_quiz_results()
+                    st.session_state.screen = 'results'
+                    st.rerun()
 
     # Display explanation for previous question if available
     if current_index > 0 and (current_index - 1) in st.session_state.quiz_answers:
@@ -492,6 +501,7 @@ def show_quiz_screen():
 
 def show_quiz_results():
     """Display quiz results and statistics"""
+    lang = st.session_state.language
     st.markdown("# 🏆 Quiz Results")
 
     total_questions = len(st.session_state.quiz_questions)
@@ -590,17 +600,19 @@ def show_quiz_results():
     col1, col2 = st.columns([1, 3])
 
     with col1:
-        if st.button("🔄 Restart Quiz", use_container_width=True):
+        if st.button(get_text('restart_same_quiz', lang), key="restart_quiz_btn", use_container_width=True):
             # Reset quiz state
             st.session_state.current_question_index = 0
             st.session_state.score = 0
             st.session_state.answered_questions = 0
             st.session_state.quiz_answers = {}
+            st.session_state.quiz_feedback = {}
             st.session_state.quiz_start_time = time.time()
+            st.session_state.screen = 'quiz'
             st.rerun()
 
     with col2:
-        if st.button("🏠 Back to Main Menu", use_container_width=True):
+        if st.button(get_text('choose_new_quiz', lang), key="back_to_options_btn", use_container_width=True):
             st.session_state.screen = 'options'
             st.rerun()
 
@@ -619,16 +631,7 @@ def show_quiz_results():
             else:
                 st.write("**Mode:** Complete Quiz")
 
-    st.markdown("---")
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("🔄 Take Another Quiz", type="primary"):
-            st.session_state.screen = 'options'
-            st.rerun()
-    with col2:
-        if st.button("🏠 Back to Welcome", type="secondary"):
-            st.session_state.screen = 'welcome'
-            st.rerun()
+
 
 
 def show_stats_screen():
@@ -654,7 +657,7 @@ def show_stats_screen():
     try:
         quiz_manager = QuizManager()
         all_questions = quiz_manager.load_questions()
-        total_questions = len(all_questions.questions) if all_questions else 0
+        total_questions = len(all_questions) if all_questions else 0
 
         st.metric("Total Questions Available", total_questions)
         st.metric("Topics Available", len(available_topics))
@@ -667,7 +670,7 @@ def show_stats_screen():
         topic_counts = {}
         topic_difficulty = {}
 
-        for q in all_questions.questions:
+        for q in all_questions:
             # Count questions per topic
             if q.topic not in topic_counts:
                 topic_counts[q.topic] = 0
@@ -713,22 +716,16 @@ def show_stats_screen():
         st.markdown("## ⚡ Difficulty Distribution")
 
         difficulty_counts = {
-            'Easy': sum(1 for q in all_questions.questions if q.difficulty.lower() == 'easy'),
-            'Medium': sum(1 for q in all_questions.questions if q.difficulty.lower() == 'medium'),
-            'Hard': sum(1 for q in all_questions.questions if q.difficulty.lower() == 'hard')
+            'Easy': sum(1 for q in all_questions if q.difficulty.lower() == 'easy'),
+            'Medium': sum(1 for q in all_questions if q.difficulty.lower() == 'medium'),
+            'Hard': sum(1 for q in all_questions if q.difficulty.lower() == 'hard')
         }
 
-        # Create a pie chart
-        import plotly.express as px
-
+        # Create a bar chart
         if sum(difficulty_counts.values()) > 0:
-            fig = px.pie(
-                names=list(difficulty_counts.keys()),
-                values=list(difficulty_counts.values()),
-                title="Questions by Difficulty Level",
-                color_discrete_sequence=px.colors.sequential.RdBu
-            )
-            st.plotly_chart(fig, use_container_width=True)
+            st.bar_chart(difficulty_counts)
+        else:
+            st.info("No questions available to display difficulty distribution.")
 
         # Add a button to refresh stats
         if st.button("🔄 Refresh Statistics"):
@@ -800,6 +797,8 @@ def main():
         show_difficulty_selection()
     elif st.session_state.screen == 'quiz':
         show_quiz_screen()
+    elif st.session_state.screen == 'results':
+        show_quiz_results()
     elif st.session_state.screen == 'stats':
         show_stats_screen()
 

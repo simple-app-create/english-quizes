@@ -44,6 +44,10 @@ TRANSLATIONS = {
         "select_topic_help": "選擇特定主題或「所有主題」來載入全部內容",
         "back_to_options": "⬅️ 返回選項",
         
+        # Quiz results buttons
+        "restart_same_quiz": "🔄 重新開始相同測驗",
+        "choose_new_quiz": "📚 選擇新測驗",
+        
         # Common UI strings
         "loading": "載入中...",
         "please_wait": "請稍候...",
@@ -174,6 +178,10 @@ TRANSLATIONS = {
         "select_topic_help": "Select a specific topic or 'All Topics' to load everything",
         "back_to_options": "⬅️ Back to Options",
         
+        # Quiz results buttons
+        "restart_same_quiz": "🔄 Restart Same Quiz",
+        "choose_new_quiz": "📚 Choose New Quiz",
+        
         # Common UI strings
         "loading": "Loading...",
         "please_wait": "Please wait...",
@@ -301,7 +309,7 @@ def get_text(key: str, language: str = "zh_TW", **kwargs) -> str:
             return text
         except KeyError:
             # Use googletrans as final fallback
-            if GOOGLETRANS_AVAILABLE:
+            if GOOGLETRANS_AVAILABLE and TRANSLATOR is not None:
                 try:
                     # Convert underscore-separated key to readable text
                     english_text = key.replace('_', ' ').title()

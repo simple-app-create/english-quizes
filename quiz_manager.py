@@ -8,7 +8,7 @@ for the English Language Arts quiz application.
 import yaml
 import os
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any, Union
+from typing import List, Optional, Dict, Any, Union, Annotated
 from pathlib import Path
 from dataclasses import dataclass
 from collections import defaultdict
@@ -29,7 +29,7 @@ class Question(BaseModel):
     topic: str
     difficulty: str = Field(..., description="easy, medium, or hard")
     question: str
-    choices: List[str] = Field(..., min_items=2, max_items=6)
+    choices: Annotated[List[str], Field(min_length=2, max_length=6)]
     correct_answer: int = Field(..., ge=0)
     passage: Optional[str] = None  # For reading comprehension questions
     explanation: Optional[str] = None
@@ -140,7 +140,7 @@ class QuizManager:
         except yaml.YAMLError as e:
             raise yaml.YAMLError(f"Error parsing YAML file {file_path}: {e}")
     
-    def load_questions(self, topics: Union[str, List[str]] = None) -> List[Question]:
+    def load_questions(self, topics: Optional[Union[str, List[str]]] = None) -> List[Question]:
         """
         Load questions from one or more topic files
         
@@ -167,8 +167,8 @@ class QuizManager:
                 
         return all_questions
     
-    def load_quiz_from_file(self, file_path: Union[str, Path] = None, 
-                         topics: Union[str, List[str]] = None) -> Quiz:
+    def load_quiz_from_file(self, file_path: Optional[Union[str, Path]] = None, 
+                         topics: Optional[Union[str, List[str]]] = None) -> Quiz:
         """
         Load quiz from YAML file(s)
         
